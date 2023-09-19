@@ -13,7 +13,7 @@ import { ImBlog } from "react-icons/im";
 import { FaClipboardList, FaBloggerB } from "react-icons/fa";
 import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate, Outlet, Link } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 
@@ -114,7 +114,7 @@ const MainLayout = () => {
                             label: "Order",
                         },
                         {
-                            key: "blog",
+                            key: "blogs",
                             icon: <FaBloggerB className="fs-4" />,
                             label: "Blogs",
                             children: [
@@ -181,7 +181,7 @@ const MainLayout = () => {
                                 </span>
                             </div>
                         </div>
-                        <div className="d-flex gap-3 align-items-center">
+                        <div className="d-flex gap-3 align-items-center dropdown">
                             <img
                                 width={32}
                                 height={32}
@@ -189,7 +189,12 @@ const MainLayout = () => {
                                 alt=""
                             />
                         </div>
-                        <div>
+                        <div
+                            role="button"
+                            id="dropdownMenuLink"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
                             <h5
                                 className="text-dark 
                              mb-0"
@@ -197,6 +202,47 @@ const MainLayout = () => {
                                 VQ
                             </h5>
                             <p className="mb-0">quanglatoi002@gmail.com</p>
+                        </div>
+                        <div
+                            className="dropdown-menu"
+                            aria-labelledby="dropdownMenuLink"
+                        >
+                            <li>
+                                <Link
+                                    style={{
+                                        height: "auto",
+                                        lineHeight: "20px",
+                                    }}
+                                    className="dropdown-item py-1 mb-1"
+                                    to="/"
+                                >
+                                    View Profile
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    style={{
+                                        height: "auto",
+                                        lineHeight: "20px",
+                                    }}
+                                    className="dropdown-item py-1 mb-1"
+                                    to="/"
+                                >
+                                    Signout
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    style={{
+                                        height: "auto",
+                                        lineHeight: "20px",
+                                    }}
+                                    className="dropdown-item py-1 mb-1"
+                                    to="/"
+                                >
+                                    Something else here
+                                </Link>
+                            </li>
                         </div>
                     </div>
                 </Header>
