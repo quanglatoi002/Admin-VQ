@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CustomInput from "../components/CustomInput";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../features/auth/authSlice";
 
+//validation
 let schema = Yup.object().shape({
     email: Yup.string()
         .email("Email Should be valid")
@@ -15,16 +16,31 @@ let schema = Yup.object().shape({
 
 const Login = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    //formik
     const formik = useFormik({
         initialValues: {
             email: "",
             password: "",
         },
         validationSchema: schema,
+        // Khi use submit nó sẽ dispatch action
         onSubmit: (values) => {
             dispatch(login(values));
         },
     });
+
+    //Lấy thông tin người dùng
+    const { user, isLoading, isError, isSuccess, message } = useSelector(
+        (state) => state.auth
+    );
+    useEffect(() => {
+        if (!user === null || isSuccess) {
+            navigate("admin");
+        } else {
+            navigate("");
+        }
+    }, [user, isSuccess, message, navigate]);
 
     return (
         <div
@@ -34,6 +50,11 @@ const Login = () => {
             <div className="login-response my-5 w-25 bg-white rounded-3 mx-auto p-3">
                 <h3 className="text-center">Login</h3>
                 <p className="text-center">Login to your account to continue</p>
+                <div className="error text-center">
+                    {message.message === "Rejected"
+                        ? "You are not an Admin"
+                        : ""}
+                </div>
                 <form action="" onSubmit={formik.handleSubmit}>
                     <CustomInput
                         type="text"

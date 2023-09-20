@@ -2,6 +2,7 @@ import React from "react";
 import { BsArrowDownRight, BsArrowUpRight } from "react-icons/bs";
 import { Column } from "@ant-design/plots";
 import { Table } from "antd";
+import ProductList from "./ProductList";
 
 const Dashboard = () => {
     const columns = [
@@ -161,9 +162,9 @@ const Dashboard = () => {
                     </div>
                 </div>
                 <div className="mt-4 w-100 w-lg-50 flex-1">
-                    <h3 className="mb-5 title">Recent Orders</h3>
+                    {/* <h3 className="mb-5 title">Recent Orders</h3> */}
                     <div>
-                        <Table columns={columns} dataSource={data1} />
+                        <ProductList />
                     </div>
                 </div>
             </div>
