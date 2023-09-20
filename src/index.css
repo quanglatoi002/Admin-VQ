@@ -71,3 +71,16 @@ main::-webkit-scrollbar {
     /* top: 16px; */
     right: -40%;
 }
+
+.error {
+    color: red;
+    font-size: 12px;
+}
+
+/* Response  */
+
+@media (max-width: 991.98px) {
+    .login-response {
+        width: 50% !important;
+    }
+}

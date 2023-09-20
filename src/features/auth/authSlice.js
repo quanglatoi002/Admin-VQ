@@ -20,9 +20,9 @@ const initialState = {
 
 export const login = createAsyncThunk(
     "auth/admin-login",
-    async (user, thunkAPI) => {
+    async (userData, thunkAPI) => {
         try {
-            return await authService.login(user);
+            return await authService.login(userData);
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
         }
@@ -40,6 +40,7 @@ export const authSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(login.fulfilled, (state, action) => {
+                state.isError = false;
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.user = action.payload;
@@ -53,4 +54,4 @@ export const authSlice = createSlice({
     },
 });
 
-export default authService.reducers;
+export default authSlice.reducer;
