@@ -12,7 +12,7 @@ const columns = [
         dataIndex: "key",
     },
     {
-        title: "Name",
+        title: "Title",
         dataIndex: "name",
     },
     {
@@ -35,14 +35,14 @@ const ColorList = () => {
             key: i + 1,
             name: colorState[i].title,
             action: (
-                <>
+                <div className="d-flex flex-lg-row flex-column justify-content-center align-items-center ">
                     <Link to="/" className=" fs-3 text-danger">
-                        <BiEdit />
+                        <BiEdit className="img-fluid" />
                     </Link>
-                    <Link className="ms-3 fs-3 text-danger" to="/">
-                        <AiFillDelete />
+                    <Link className="ms-lg-3 fs-3 text-danger" to="/">
+                        <AiFillDelete className="img-fluid" />
                     </Link>
-                </>
+                </div>
             ),
         });
     }

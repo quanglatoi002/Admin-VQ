@@ -12,20 +12,12 @@ const columns = [
         dataIndex: "key",
     },
     {
-        title: "Name",
+        title: "Title",
         dataIndex: "name",
-    },
-    {
-        title: "Description",
-        dataIndex: "description",
     },
     {
         title: "Category",
         dataIndex: "category",
-    },
-    {
-        title: "NumViews",
-        dataIndex: "numViews",
     },
     {
         title: "Action",
@@ -45,9 +37,7 @@ const BlogList = () => {
         dataBlog.push({
             key: i + 1,
             name: blogState[i].title,
-            description: blogState[i].description,
             category: blogState[i].category,
-            numViews: blogState[i].numViews,
             action: (
                 <div className="d-flex flex-lg-row flex-column justify-content-center align-items-center ">
                     <Link to="/" className=" fs-3 text-danger">
