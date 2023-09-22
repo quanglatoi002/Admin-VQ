@@ -5,13 +5,15 @@ import "react-quill/dist/quill.snow.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { getBrands } from "../features/brand/brandSlice";
 import { getCategories } from "../features/pcategory/pcategorySlice";
 import { getColors } from "../features/color/colorSlice";
 import { Select } from "antd";
 import Dropzone from "react-dropzone";
 import { delImg, uploadImg } from "../features/upload/uploadSlice";
-import { createProducts } from "../features/product/productSlice";
+import { createProducts, resetState } from "../features/product/productSlice";
+import { toast } from "react-toastify";
 
 //validation
 let schema = Yup.object().shape({
@@ -29,6 +31,7 @@ let schema = Yup.object().shape({
 
 const AddProduct = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [color, setColor] = useState([]);
     const [images, setImages] = useState([]);
     //useSelector
@@ -36,28 +39,20 @@ const AddProduct = () => {
     const pCategoryState = useSelector((state) => state.pCategory.pCategories);
     const colorState = useSelector((state) => state.color.colors);
     const imgState = useSelector((state) => state.upload.images);
+    const newProduct = useSelector((state) => state.product);
+    const { isSuccess, isError, isLoading, createdProduct } = newProduct;
 
+    console.log(createdProduct);
+    //notify
+    useEffect(() => {
+        if (isSuccess && createdProduct) {
+            toast.success("Product Added Successfully!");
+        }
+        if (isError) {
+            toast.error("Something Went Wrong!");
+        }
+    }, [isSuccess, isError, isLoading, createdProduct]);
     //formik
-    const formik = useFormik({
-        initialValues: {
-            title: "",
-            description: "",
-            price: "",
-            brand: "",
-            category: "",
-            tags: "",
-            color: "",
-            quantity: "",
-            images: "",
-        },
-        validationSchema: schema,
-        // Khi use submit nó sẽ dispatch action
-        onSubmit: (values) => {
-            dispatch(createProducts(values));
-            formik.resetForm();
-            setColor(null);
-        },
-    });
 
     //call API
     useEffect(() => {
@@ -91,11 +86,33 @@ const AddProduct = () => {
         return options;
     }, [imgState]);
 
+    const formik = useFormik({
+        initialValues: {
+            title: "",
+            description: "",
+            price: "",
+            brand: "",
+            category: "",
+            tags: "",
+            color: "",
+            quantity: "",
+            images: "",
+        },
+        validationSchema: schema,
+        // Khi use submit nó sẽ dispatch action
+        onSubmit: (values) => {
+            dispatch(createProducts(values));
+            formik.resetForm();
+            setColor(null);
+            setTimeout(() => {
+                navigate("/admin/list-product");
+            }, 3000);
+        },
+    });
     useEffect(() => {
         formik.values.color = color ? color : "";
         formik.values.images = imgOption;
     }, [color, formik.values, images, imgOption]);
-
     return (
         <div>
             <h3 className="mb-4 title">Add Product</h3>
@@ -270,7 +287,10 @@ const AddProduct = () => {
                         })}
                     </div>
 
-                    <button className="btn btn-success border-0 rounded-3 my-5">
+                    <button
+                        type="submit"
+                        className="btn btn-success border-0 rounded-3 my-5"
+                    >
                         Add Product
                     </button>
                 </form>
