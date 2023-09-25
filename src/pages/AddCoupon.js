@@ -50,10 +50,10 @@ const AddCoupon = () => {
 
     useEffect(() => {
         if (isSuccess && createdCoupon) {
-            toast.success("Coupon Added Successfullly!");
+            toast.success("Coupon Added Successfully!");
         }
         if (isSuccess && updatedCoupon) {
-            toast.success("Coupon Updated Successfullly!");
+            toast.success("Coupon Updated Successfully!");
             navigate("/admin/coupon-list");
         }
         if (isError && couponName && couponDiscount && couponExpiry) {

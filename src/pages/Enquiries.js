@@ -1,10 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import { Link } from "react-router-dom";
-import { BiEdit } from "react-icons/bi";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete, AiOutlineEye } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { getEnquiries } from "../features/enquiry/enquirySlice";
+import {
+    deleteAEnquiry,
+    getEnquiries,
+    resetState,
+    updateAEnquiry,
+} from "../features/enquiry/enquirySlice";
+import CustomModal from "../components/CustomModal";
 
 const columns = [
     {
@@ -36,11 +41,27 @@ const columns = [
 
 const Enquiries = () => {
     const dispatch = useDispatch();
+    const [open, setOpen] = useState(false);
+    const [enqId, setEnquiryId] = useState("");
+    const showModal = (e) => {
+        setOpen(true);
+        setEnquiryId(e);
+    };
+
+    const hideModal = () => {
+        setOpen(false);
+    };
     useEffect(() => {
+        console.log("a");
+        dispatch(resetState());
         dispatch(getEnquiries());
     }, [dispatch]);
 
     const enquiryState = useSelector((state) => state.enquiry.enquiries);
+    const setEnquiryStatus = (e, i) => {
+        const data = { id: i, enqData: e };
+        dispatch(updateAEnquiry(data));
+    };
     const dataEnquiry = [];
     for (let i = 0; i < enquiryState.length; i++) {
         dataEnquiry.push({
@@ -59,6 +80,12 @@ const Enquiries = () => {
                         }
                         className="form-control form-select"
                         id=""
+                        onChange={(e) =>
+                            setEnquiryStatus(
+                                e.target.value,
+                                enquiryState[i]._id
+                            )
+                        }
                     >
                         <option value="Submitted">Submitted</option>
                         <option value="Contacted">Contacted</option>
@@ -70,16 +97,30 @@ const Enquiries = () => {
 
             action: (
                 <div className="d-flex flex-lg-row flex-column justify-content-center align-items-center ">
-                    <Link to="/" className=" fs-3 text-danger">
-                        <BiEdit className="img-fluid" />
+                    <Link
+                        className="ms-3 fs-3 text-danger"
+                        to={`/admin/enquiries/${enquiryState[i]._id}`}
+                    >
+                        <AiOutlineEye />
                     </Link>
-                    <Link className="ms-lg-3 fs-3 text-danger" to="/">
-                        <AiFillDelete className="img-fluid" />
-                    </Link>
+                    <button
+                        className="ms-3 fs-3 text-danger bg-transparent border-0"
+                        onClick={() => showModal(enquiryState[i]._id)}
+                    >
+                        <AiFillDelete />
+                    </button>
                 </div>
             ),
         });
     }
+
+    const deleteEnq = (e) => {
+        dispatch(deleteAEnquiry(e));
+        setOpen(false);
+        setTimeout(() => {
+            dispatch(getEnquiries());
+        }, 100);
+    };
 
     return (
         <div>
@@ -87,6 +128,14 @@ const Enquiries = () => {
             <div>
                 <Table columns={columns} dataSource={dataEnquiry} />
             </div>
+            <CustomModal
+                hideModal={hideModal}
+                open={open}
+                performAction={() => {
+                    deleteEnq(enqId);
+                }}
+                title="Are you sure you want to delete this enquiry?"
+            />
         </div>
     );
 };

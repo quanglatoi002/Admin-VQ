@@ -39,10 +39,10 @@ const AddBlogCat = () => {
     }, [dispatch, getBlogCatId]);
     useEffect(() => {
         if (isSuccess && createBlogCategory) {
-            toast.success("Blog Category Added Successfullly!");
+            toast.success("Blog Category Added Successfully!");
         }
         if (isSuccess && updatedBlogCategory) {
-            toast.success("Blog Category Updated Successfullly!");
+            toast.success("Blog Category Updated Successfully!");
             navigate("/admin/blog-category-list");
         }
         if (isError) {
