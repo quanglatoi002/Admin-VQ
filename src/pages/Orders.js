@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { getOrders } from "../features/auth/authSlice";
+import { getOrders, updateOrder } from "../features/auth/authSlice";
 const columns = [
     {
         title: "SNo",
@@ -39,6 +39,9 @@ const Orders = () => {
         dispatch(getOrders());
     }, [dispatch]);
     const orderState = useSelector((state) => state.auth.orders?.orders);
+    const updateOrderStatus = (a, b) => {
+        dispatch(updateOrder({ id: a, status: b }));
+    };
 
     const data1 = [];
     for (let i = 0; i < orderState?.length; i++) {
@@ -54,16 +57,32 @@ const Orders = () => {
             date: new Date(orderState[i]?.createdAt).toLocaleString(),
             action: (
                 <>
-                    <Link to="/" className=" fs-3 text-danger">
-                        <BiEdit />
-                    </Link>
-                    <Link className="ms-3 fs-3 text-danger" to="/">
-                        <AiFillDelete />
-                    </Link>
+                    <select
+                        defaultValue={orderState[i]?.orderStatus}
+                        onChange={(e) =>
+                            updateOrderStatus(
+                                orderState[i]?._id,
+                                e.target.value
+                            )
+                        }
+                        name=""
+                        id=""
+                        className="form-control form-select"
+                    >
+                        <option value="Ordered" disabled selected>
+                            Ordered
+                        </option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Out For Delivery">
+                            Out For Delivery
+                        </option>
+                        <option value=" Delivered">Delivered</option>
+                    </select>
                 </>
             ),
         });
     }
+
     return (
         <div>
             <h3 className="mb-4 title">Orders</h3>
