@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 import { Modal } from "antd";
 
 const CustomModal = (props) => {
@@ -17,4 +17,4 @@ const CustomModal = (props) => {
     );
 };
 
-export default CustomModal;
+export default memo(CustomModal);

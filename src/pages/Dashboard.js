@@ -46,17 +46,17 @@ const Dashboard = () => {
     console.log(dataMonthly);
     const dispatch = useDispatch();
 
-    const monthlyDataState = useSelector((state) => state?.auth?.monthlyData);
-    const yearlyDataState = useSelector((state) => state?.auth?.yearlyData);
-    const ordersState = useSelector((state) => state?.auth?.orders?.orders);
-    const dataLoaded = useSelector((state) => state?.data?.isLoading);
-    console.log(ordersState);
-
     useEffect(() => {
         dispatch(getMonthlyData());
         dispatch(getYearlyData());
         dispatch(getOrders());
     }, [dispatch]);
+
+    const monthlyDataState = useSelector((state) => state?.auth?.monthlyData);
+    const yearlyDataState = useSelector((state) => state?.auth?.yearlyData);
+    const ordersState = useSelector((state) => state?.auth?.orders?.orders);
+    const dataLoaded = useSelector((state) => state?.data?.isLoading);
+    console.log(ordersState);
 
     useEffect(() => {
         let mL = [
@@ -163,10 +163,6 @@ const Dashboard = () => {
             },
         },
     };
-
-    if (dataLoaded) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <div>

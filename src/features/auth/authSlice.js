@@ -87,7 +87,6 @@ export const getYearlyData = createAsyncThunk(
 const initialState = {
     user: getUserFromLocalStorage,
     monthlyData: [],
-
     isError: false,
     isLoading: false,
     isSuccess: false,

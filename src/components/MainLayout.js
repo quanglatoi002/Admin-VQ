@@ -7,6 +7,7 @@ import {
     AiOutlineBgColors,
     AiOutlinePicRight,
     AiOutlinePicLeft,
+    AiOutlineLogout,
 } from "react-icons/ai";
 import { RiCouponLine } from "react-icons/ri";
 import { ToastContainer } from "react-toastify";
@@ -16,11 +17,13 @@ import { ImBlog } from "react-icons/im";
 import { FaClipboardList, FaBloggerB } from "react-icons/fa";
 import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
-import { useNavigate, Outlet, Link } from "react-router-dom";
+import { useNavigate, Outlet, Link, useLocation } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
+    const location = useLocation();
+    console.log(location);
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer },
@@ -39,8 +42,11 @@ const MainLayout = () => {
                     theme="dark"
                     mode="inline"
                     defaultSelectedKeys={[""]}
-                    onClick={({ key }) => {
+                    onClick={async ({ key }) => {
                         if (key === "signout") {
+                            localStorage.clear();
+                            navigate("/");
+                            window.location.reload();
                         } else {
                             navigate(key);
                         }
@@ -164,6 +170,11 @@ const MainLayout = () => {
                             key: "enquiries",
                             icon: <FaClipboardList className="fs-4" />,
                             label: "Enquiries",
+                        },
+                        {
+                            key: "signout",
+                            icon: <AiOutlineLogout className="fs-4" />,
+                            label: "Sign Out",
                         },
                     ]}
                 />
