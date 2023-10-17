@@ -45,6 +45,7 @@ const MainLayout = () => {
                     onClick={async ({ key }) => {
                         if (key === "signout") {
                             localStorage.clear();
+
                             navigate("/");
                             window.location.reload();
                         } else {

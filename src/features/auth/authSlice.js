@@ -18,9 +18,9 @@ export const login = createAsyncThunk(
 
 export const getOrders = createAsyncThunk(
     "order/get-orders",
-    async (thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            return await authService.getOrders();
+            return await authService.getOrders(data);
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
         }
@@ -64,9 +64,9 @@ export const getOrder = createAsyncThunk(
 
 export const getMonthlyData = createAsyncThunk(
     "order/monthly-data",
-    async (thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            return await authService.getMonthlyOrders();
+            return await authService.getMonthlyOrders(data);
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
         }
@@ -75,9 +75,9 @@ export const getMonthlyData = createAsyncThunk(
 
 export const getYearlyData = createAsyncThunk(
     "order/yearly-data",
-    async (thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            return await authService.getYearlyOrders();
+            return await authService.getYearlyOrders(data);
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
         }
@@ -104,6 +104,8 @@ export const authSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(login.fulfilled, (state, action) => {
+                console.log(localStorage.getItem("user"));
+
                 state.isError = false;
                 state.isLoading = false;
                 state.isSuccess = true;

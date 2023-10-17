@@ -1,8 +1,6 @@
-import React from "react";
-import { BsArrowDownRight, BsArrowUpRight } from "react-icons/bs";
+import React, { useMemo } from "react";
 import { Column } from "@ant-design/plots";
 import { Table } from "antd";
-import ProductList from "./ProductList";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import {
@@ -11,6 +9,7 @@ import {
     getYearlyData,
 } from "../features/auth/authSlice";
 import { useState } from "react";
+import { config } from "../utils/axiosConfig";
 
 const columns = [
     {
@@ -43,20 +42,35 @@ const Dashboard = () => {
     const [dataMonthly, setDataMonthly] = useState([]);
     const [dataMonthlySales, setDataMonthlySales] = useState([]);
     const [orderData, setOrderData] = useState([]);
-    console.log(dataMonthly);
+    // const [isReady, setIsReady] = useState(false);
     const dispatch = useDispatch();
 
+    //Lưu ý khi sử dụng 1 biến bên ngoài của config4 mà config lại để làm denpen của useEffect thì phải sử dụng useMemo()
+    const getTokenFromLocalStorage =
+        JSON.parse(localStorage.getItem("user")) ?? null;
+
+    console.log(getTokenFromLocalStorage);
+    const config4 = useMemo(() => {
+        return {
+            headers: {
+                Authorization: `Bearer ${
+                    getTokenFromLocalStorage?.token ?? ""
+                }`,
+                Accept: "application/json",
+            },
+        };
+    }, [getTokenFromLocalStorage]);
+    console.log(config4);
+
     useEffect(() => {
-        dispatch(getMonthlyData());
-        dispatch(getYearlyData());
-        dispatch(getOrders());
-    }, [dispatch]);
+        dispatch(getMonthlyData(config4));
+        dispatch(getYearlyData(config4));
+        dispatch(getOrders(config4));
+    }, []);
 
     const monthlyDataState = useSelector((state) => state?.auth?.monthlyData);
     const yearlyDataState = useSelector((state) => state?.auth?.yearlyData);
     const ordersState = useSelector((state) => state?.auth?.orders?.orders);
-    const dataLoaded = useSelector((state) => state?.data?.isLoading);
-    console.log(ordersState);
 
     useEffect(() => {
         let mL = [
