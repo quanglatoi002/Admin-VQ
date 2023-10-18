@@ -5,6 +5,7 @@ import { AiFillDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../features/product/productSlice";
 import { Link } from "react-router-dom";
+import { Excel } from "antd-table-saveas-excel";
 
 const columns = [
     {
@@ -71,11 +72,29 @@ const ProductList = () => {
             ),
         });
     }
+
+    const handleClick = () => {
+        const excel = new Excel();
+        excel
+            .addSheet("test")
+            .addColumns(columns)
+            .addDataSource(dataProduct, {
+                str2Percent: true,
+            })
+            .saveAs("Excel.xlsx");
+    };
     return (
         <div>
             <h3 className="mb-4 title">Products</h3>
             <div>
-                <Table columns={columns} dataSource={dataProduct} />
+                <button className="p-2 mb-4" onClick={handleClick}>
+                    <span className="p-2 fs-6">Export</span>
+                </button>
+                <Table
+                    id="table-xls"
+                    columns={columns}
+                    dataSource={dataProduct}
+                />
             </div>
         </div>
     );
