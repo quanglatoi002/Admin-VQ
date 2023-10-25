@@ -73,7 +73,7 @@ const ProductList = () => {
         });
     }
 
-    const handleClick = () => {
+    const exportExcel = () => {
         const excel = new Excel();
         excel
             .addSheet("test")
@@ -87,7 +87,7 @@ const ProductList = () => {
         <div>
             <h3 className="mb-4 title">Products</h3>
             <div>
-                <button className="p-2 mb-4" onClick={handleClick}>
+                <button className="p-2 mb-4" onClick={exportExcel}>
                     <span className="p-2 fs-6">Export</span>
                 </button>
                 <Table

@@ -12,7 +12,11 @@ import { getCategories } from "../features/pcategory/pcategorySlice";
 import { getColors } from "../features/color/colorSlice";
 import { Select } from "antd";
 import Dropzone from "react-dropzone";
-import { delImg, uploadImg } from "../features/upload/uploadSlice";
+import {
+    delImg,
+    resetImgState,
+    uploadImg,
+} from "../features/upload/uploadSlice";
 import { createProducts, resetState } from "../features/product/productSlice";
 let schema = yup.object().shape({
     title: yup.string().required("Title is Required"),
@@ -32,7 +36,6 @@ const AddProduct = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [color, setColor] = useState([]);
-    const [images, setImages] = useState([]);
     console.log(color);
     useEffect(() => {
         dispatch(getBrands());
@@ -43,7 +46,8 @@ const AddProduct = () => {
     const brandState = useSelector((state) => state.brand.brands);
     const catState = useSelector((state) => state.pCategory.pCategories);
     const colorState = useSelector((state) => state.color.colors);
-    const imgState = useSelector((state) => state.upload.images);
+    const imgState = useSelector((state) => state.upload?.images);
+    console.log(imgState);
     const newProduct = useSelector((state) => state.product);
     const { isSuccess, isError, isLoading, createdProduct } = newProduct;
     useEffect(() => {
@@ -54,20 +58,16 @@ const AddProduct = () => {
             toast.error("Something Went Wrong!");
         }
     }, [isSuccess, isError, isLoading, createdProduct]);
-    const coloropt = [];
-    colorState.forEach((i) => {
-        coloropt.push({
-            label: i.title,
-            value: i._id,
-        });
-    });
-    const img = [];
-    imgState.forEach((i) => {
-        img.push({
-            public_id: i.public_id,
-            url: i.url,
-        });
-    });
+    // color
+    const colorOptions = colorState.map((i) => ({
+        label: i.title,
+        value: i._id,
+    }));
+    //images
+    const imageOptions = imgState.map((i) => ({
+        public_id: i.public_id,
+        url: i.url,
+    }));
 
     const formik = useFormik({
         initialValues: {
@@ -87,17 +87,19 @@ const AddProduct = () => {
             formik.resetForm();
             setColor(null);
             setTimeout(() => {
-                dispatch(resetState());
-            }, 3000);
+                Promise.all([
+                    dispatch(resetState()),
+                    dispatch(resetImgState()),
+                ]);
+            }, 2000);
         },
     });
     useEffect(() => {
         formik.values.color = color ? color : " ";
-        formik.values.images = img;
-    }, [color, formik.values, img]);
+        formik.values.images = imageOptions;
+    }, [color, formik.values, imageOptions]);
     const handleColors = (e) => {
         setColor(e);
-        console.log(color);
     };
     return (
         <div>
@@ -207,7 +209,7 @@ const AddProduct = () => {
                         placeholder="Select colors"
                         defaultValue={color}
                         onChange={(i) => handleColors(i)}
-                        options={coloropt}
+                        options={colorOptions}
                     />
                     <div className="error">
                         {formik.touched.color && formik.errors.color}
