@@ -217,18 +217,16 @@ const Dashboard = () => {
                         <Column {...config} />
                     </div>
                 </div>
-                <div className="mt-4 flex-grow-1 w-lg-50 w-100">
+                <div className="mt-4 flex-grow-1 w-100">
                     <h3 className="mb-5 title">Sales Statics</h3>
                     <div>
                         <Column {...config1} />
                     </div>
                 </div>
-
-                <div className="mt-4 w-100 w-lg-50 flex-1">
-                    {/* <h3 className="mb-5 title">Recent Orders</h3> */}
-                    <div>
-                        <Table columns={columns} dataSource={orderData} />
-                    </div>
+            </div>
+            <div className="mt-5 d-flex flex-1">
+                <div className="w-100">
+                    <Table columns={columns} dataSource={orderData} />
                 </div>
             </div>
         </div>

@@ -18,10 +18,13 @@ import { FaClipboardList, FaBloggerB } from "react-icons/fa";
 import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
 import { useNavigate, Outlet, Link, useLocation } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
+    const { firstname, lastname, email } = useSelector(
+        (state) => state.auth?.user
+    );
     const location = useLocation();
     console.log(location);
     const [collapsed, setCollapsed] = useState(false);
@@ -213,14 +216,14 @@ const MainLayout = () => {
                                 </span>
                             </div>
                         </div>
-                        <div className="d-flex gap-3 align-items-center dropdown">
+                        {/* <div className="d-flex gap-3 align-items-center dropdown">
                             <img
                                 width={32}
                                 height={32}
                                 src="https://stroyka-admin.html.themeforest.scompiler.ru/variants/ltr/images/customers/customer-4-64x64.jpg"
                                 alt=""
                             />
-                        </div>
+                        </div> */}
                         <div
                             role="button"
                             id="dropdownMenuLink"
@@ -231,9 +234,9 @@ const MainLayout = () => {
                                 className="text-dark 
                              mb-0"
                             >
-                                VQ
+                                {email}
                             </h5>
-                            <p className="mb-0">quanglatoi002@gmail.com</p>
+                            <p className="mb-0">{firstname + lastname}</p>
                         </div>
                         <div
                             className="dropdown-menu"
