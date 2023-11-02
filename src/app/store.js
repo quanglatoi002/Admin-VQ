@@ -11,6 +11,15 @@ import bCategoryReducer from "../features/bcategory/bcategorySlice";
 import uploadReducer from "../features/upload/uploadSlice";
 import couponReducer from "../features/coupon/couponSlice";
 
+import {
+    FLUSH,
+    REHYDRATE,
+    PAUSE,
+    PERSIST,
+    PURGE,
+    REGISTER,
+} from "redux-persist";
+
 export const store = configureStore({
     reducer: {
         auth: authReducer,
@@ -25,6 +34,19 @@ export const store = configureStore({
         upload: uploadReducer,
         coupon: couponReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: [
+                    FLUSH,
+                    REHYDRATE,
+                    PAUSE,
+                    PERSIST,
+                    PURGE,
+                    REGISTER,
+                ],
+            },
+        }),
 });
 
 export default store;

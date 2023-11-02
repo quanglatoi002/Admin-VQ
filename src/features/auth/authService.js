@@ -16,10 +16,9 @@ const login = async (userData) => {
     }
 };
 
-const getOrders = async (data) => {
-    const response = await axios.get(`${base_url}user/getall-orders`, data);
-
-    return response.data;
+const getOrders = async () => {
+    const response = await axios.get(`${base_url}user/getall-orders`, config);
+    if (response?.data) return response.data;
 };
 
 const updateOrder = async (data) => {
@@ -35,7 +34,7 @@ const updateOrder = async (data) => {
 const getOrder = async (id) => {
     const response = await axios.get(`${base_url}user/getAOrder/${id}`, config);
 
-    return response.data;
+    if (response?.data) return response.data;
 };
 
 const getMonthlyOrders = async (data) => {
