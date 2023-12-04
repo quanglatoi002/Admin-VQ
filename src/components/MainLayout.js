@@ -1,5 +1,5 @@
 import { Layout, Menu, Button, theme } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     AiOutlineDashboard,
     AiOutlineShoppingCart,
@@ -19,19 +19,38 @@ import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
 import { useNavigate, Outlet, Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import io from "socket.io-client";
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
+    const [orders, setOrders] = useState([]);
+    const navigate = useNavigate();
+
     const { firstname, lastname, email } = useSelector(
         (state) => state.auth?.user
     );
     const location = useLocation();
-    console.log(location);
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer },
     } = theme.useToken();
-    const navigate = useNavigate();
+    useEffect(() => {
+        // Kết nối tới server sử dụng socket.io
+        const socket = io("http://localhost:5003");
+
+        // Lắng nghe sự kiện 'newOrder' từ server
+        socket.on("newOrder", (data) => {
+            console.log("Đã nhận thông báo đơn hàng mới:", data);
+
+            // Cập nhật danh sách đơn hàng mới
+            setOrders((prevOrders) => [...prevOrders, JSON.parse(data)]);
+        });
+
+        // Hủy đăng ký lắng nghe khi component unmount
+        return () => {
+            socket.disconnect();
+        };
+    }, []); // Chỉ chạy một lần khi component được mount
     return (
         <Layout>
             <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -212,7 +231,7 @@ const MainLayout = () => {
                             <div className="position-relative">
                                 <IoIosNotifications className="fs-4" />
                                 <span className="badge bg-warning rounded-circle position-absolute">
-                                    3
+                                    {orders.map((order) => order)}3
                                 </span>
                             </div>
                         </div>
