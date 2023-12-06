@@ -23,27 +23,31 @@ import io from "socket.io-client";
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
+    const [isShow, setIsShow] = useState(false);
     const [orders, setOrders] = useState([]);
     const navigate = useNavigate();
+    console.log(orders);
 
     const { firstname, lastname, email } = useSelector(
         (state) => state.auth?.user
     );
-    const location = useLocation();
+
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer },
     } = theme.useToken();
+
     useEffect(() => {
         // Kết nối tới server sử dụng socket.io
         const socket = io("http://localhost:5003");
+        console.log("socket", socket);
 
         // Lắng nghe sự kiện 'newOrder' từ server
         socket.on("newOrder", (data) => {
             console.log("Đã nhận thông báo đơn hàng mới:", data);
 
             // Cập nhật danh sách đơn hàng mới
-            setOrders((prevOrders) => [...prevOrders, JSON.parse(data)]);
+            setOrders((prevOrders) => [...prevOrders, data]);
         });
 
         // Hủy đăng ký lắng nghe khi component unmount
@@ -51,6 +55,10 @@ const MainLayout = () => {
             socket.disconnect();
         };
     }, []); // Chỉ chạy một lần khi component được mount
+
+    const handleShow = () => {
+        setIsShow((prev) => !prev);
+    };
     return (
         <Layout>
             <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -228,11 +236,32 @@ const MainLayout = () => {
                     />
                     <div className="d-flex gap-3 align-items-center">
                         <div className="px-3">
-                            <div className="position-relative">
+                            <div
+                                onClick={handleShow}
+                                className="position-relative"
+                            >
                                 <IoIosNotifications className="fs-4" />
                                 <span className="badge bg-warning rounded-circle position-absolute">
-                                    {orders.map((order) => order)}3
+                                    {orders?.length}
                                 </span>
+                                {isShow && (
+                                    <div className="notification">
+                                        <div className="notification-up">
+                                            Notification
+                                        </div>
+
+                                        <div className="notification-main">
+                                            <div className="notification-content">
+                                                {orders?.map((order) => (
+                                                    <div className="notification-info">
+                                                        {order.name} đã đặt hàng
+                                                        thành công
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         {/* <div className="d-flex gap-3 align-items-center dropdown">
