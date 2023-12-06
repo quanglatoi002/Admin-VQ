@@ -203,6 +203,11 @@ const MainLayout = () => {
                             label: "Enquiries",
                         },
                         {
+                            key: "notifications",
+                            icon: <IoIosNotifications className="fs-4" />,
+                            label: "Notifications",
+                        },
+                        {
                             key: "signout",
                             icon: <AiOutlineLogout className="fs-4" />,
                             label: "Sign Out",

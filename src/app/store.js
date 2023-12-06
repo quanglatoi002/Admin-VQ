@@ -10,6 +10,7 @@ import blogReducer from "../features/blogs/blogSlice";
 import bCategoryReducer from "../features/bcategory/bcategorySlice";
 import uploadReducer from "../features/upload/uploadSlice";
 import couponReducer from "../features/coupon/couponSlice";
+import notificationSlice from "../features/notification/notificationSlice";
 
 import {
     FLUSH,
@@ -33,6 +34,7 @@ export const store = configureStore({
         enquiry: enquiryReducer,
         upload: uploadReducer,
         coupon: couponReducer,
+        notifi: notificationSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

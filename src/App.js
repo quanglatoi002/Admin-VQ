@@ -23,6 +23,7 @@ import CouponList from "./pages/CouponList";
 import AddCoupon from "./pages/AddCoupon";
 import ViewEnquiry from "./pages/ViewEnquiry";
 import ViewOrder from "./pages/ViewOrder";
+import Notification from "./pages/Notifications";
 import { PrivateRoutes } from "./routing/PrivateRoutes";
 import { OpenRoutes } from "./routing/OpenRoutes";
 
@@ -76,6 +77,7 @@ function App() {
                     <Route path="brand/:id" element={<AddBrand />} />
                     <Route path="list-product" element={<ProductList />} />
                     <Route path="product" element={<AddProduct />} />
+                    <Route path="notifications" element={<Notification />} />
                 </Route>
             </Routes>
         </Router>
