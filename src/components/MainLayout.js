@@ -206,6 +206,22 @@ const MainLayout = () => {
                             key: "notifications",
                             icon: <IoIosNotifications className="fs-4" />,
                             label: "Notifications",
+                            children: [
+                                {
+                                    key: "notification",
+                                    icon: (
+                                        <IoIosNotifications className="fs-4" />
+                                    ),
+                                    label: "Add Notification",
+                                },
+                                {
+                                    key: "notification-list",
+                                    icon: (
+                                        <IoIosNotifications className="fs-4" />
+                                    ),
+                                    label: "Notification List",
+                                },
+                            ],
                         },
                         {
                             key: "signout",

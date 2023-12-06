@@ -1,16 +1,16 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import notificationService from "./notificationService";
 
-// export const getEnquiries = createAsyncThunk(
-//     "enquiry/get-enquiries",
-//     async (thunkAPI) => {
-//         try {
-//             return await enquiryService.getEnquiries();
-//         } catch (error) {
-//             return thunkAPI.rejectWithValue(error);
-//         }
-//     }
-// );
+export const getNotifications = createAsyncThunk(
+    "notification/get-notifications",
+    async (thunkAPI) => {
+        try {
+            return await notificationService.getNotifications();
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    }
+);
 
 export const addNotification = createAsyncThunk(
     "notification/add-notifi",
@@ -32,12 +32,27 @@ const initialState = {
     isSuccess: false,
     message: "",
 };
-export const enquirySlice = createSlice({
+export const NotifiSlice = createSlice({
     name: "notifications",
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(getNotifications.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getNotifications.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.getNotifications = action.payload;
+            })
+            .addCase(getNotifications.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+            })
             .addCase(addNotification.pending, (state) => {
                 state.isLoading = true;
             })
@@ -56,4 +71,4 @@ export const enquirySlice = createSlice({
             .addCase(resetState, () => initialState);
     },
 });
-export default enquirySlice.reducer;
+export default NotifiSlice.reducer;

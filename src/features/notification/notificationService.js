@@ -2,8 +2,8 @@ import axios from "axios";
 import { base_url } from "../../utils/base_url";
 import { config } from "../../utils/axiosConfig";
 
-const getEnquiries = async () => {
-    const response = await axios.get(`${base_url}enquiry/`);
+const getNotifications = async () => {
+    const response = await axios.get(`${base_url}send-notification/`);
 
     return response.data;
 };
@@ -16,7 +16,7 @@ const AddNotifications = async (notifi) => {
 };
 
 const notificationService = {
-    getEnquiries,
+    getNotifications,
     AddNotifications,
 };
 

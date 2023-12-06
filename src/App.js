@@ -26,6 +26,7 @@ import ViewOrder from "./pages/ViewOrder";
 import Notification from "./pages/Notifications";
 import { PrivateRoutes } from "./routing/PrivateRoutes";
 import { OpenRoutes } from "./routing/OpenRoutes";
+import NotifiList from "./pages/NotifiList";
 
 function App() {
     return (
@@ -77,7 +78,8 @@ function App() {
                     <Route path="brand/:id" element={<AddBrand />} />
                     <Route path="list-product" element={<ProductList />} />
                     <Route path="product" element={<AddProduct />} />
-                    <Route path="notifications" element={<Notification />} />
+                    <Route path="notification" element={<Notification />} />
+                    <Route path="notification-list" element={<NotifiList />} />
                 </Route>
             </Routes>
         </Router>
