@@ -30,6 +30,7 @@ let schema = yup.object().shape({
         .min(1, "Pick at least one color")
         .required("Color is Required"),
     quantity: yup.number().required("Quantity is Required"),
+    // sizes: yup.array().required("Size is Required"),
 });
 
 const AddProduct = () => {
@@ -41,7 +42,7 @@ const AddProduct = () => {
         dispatch(getBrands());
         dispatch(getCategories());
         dispatch(getColors());
-    }, []);
+    }, [dispatch]);
 
     const brandState = useSelector((state) => state.brand.brands);
     const catState = useSelector((state) => state.pCategory.pCategories);
@@ -80,9 +81,11 @@ const AddProduct = () => {
             color: "",
             quantity: "",
             images: "",
+            // sizes: [{ name: "", quantity: 0 }],
         },
         validationSchema: schema,
         onSubmit: (values) => {
+            console.log("values", values);
             dispatch(createProducts(values));
             formik.resetForm();
             setColor(null);
@@ -91,13 +94,15 @@ const AddProduct = () => {
                     dispatch(resetState()),
                     dispatch(resetImgState()),
                 ]);
-            }, 2000);
+            }, 500);
         },
     });
+
     useEffect(() => {
         formik.values.color = color ? color : " ";
         formik.values.images = imageOptions;
     }, [color, formik.values, imageOptions]);
+    //handle
     const handleColors = (e) => {
         setColor(e);
     };
@@ -163,6 +168,52 @@ const AddProduct = () => {
                     <div className="error">
                         {formik.touched.brand && formik.errors.brand}
                     </div>
+
+                    {/* {formik.values.sizes?.map((size, index) => (
+                        <div key={index}>
+                            <label>{`Size ${index + 1}:`}</label>
+                            <CustomInput
+                                type="text"
+                                name={`sizes.${index}.size`}
+                                label="Enter Name Size"
+                                onCh={formik.handleChange}
+                                onBlr={formik.handleBlur}
+                                val={formik.values.sizes[index].size}
+                            />
+                            <label>Quantity:</label>
+                            <CustomInput
+                                type="number"
+                                name={`sizes.${index}.quantity`}
+                                label="Enter Quantity Size"
+                                onCh={formik.handleChange}
+                                onBlr={formik.handleBlur}
+                                val={formik.values.sizes[index].quantity}
+                            />
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    formik.setFieldValue(`sizes.${index}`, {
+                                        size: "",
+                                        quantity: 0,
+                                    })
+                                }
+                            >
+                                Remove Size
+                            </button>
+                        </div>
+                    ))}
+                    <button
+                        type="button"
+                        onClick={() =>
+                            formik.setFieldValue("sizes", [
+                                ...formik.values.sizes,
+                                { size: "", quantity: 0 },
+                            ])
+                        }
+                    >
+                        Add Size
+                    </button> */}
+
                     <select
                         name="category"
                         onChange={formik.handleChange("category")}

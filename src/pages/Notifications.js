@@ -20,7 +20,7 @@ const AddNotification = () => {
     const location = useLocation();
 
     const navigate = useNavigate();
-    const newNotification = useSelector((state) => state.notifi);
+    const newNotification = useSelector((state) => state.notifi.notifications);
 
     const { isSuccess, isError, isLoading, notifications } = newNotification;
 
@@ -43,10 +43,10 @@ const AddNotification = () => {
         validationSchema: schema,
         onSubmit: async (values) => {
             dispatch(addNotification(values));
-            formik.resetForm("10");
+            formik.resetForm();
             setTimeout(() => {
                 dispatch(resetState());
-            }, 300);
+            }, 500);
         },
     });
     return (

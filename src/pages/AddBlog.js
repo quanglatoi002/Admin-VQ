@@ -29,7 +29,7 @@ const AddBlog = () => {
     const location = useLocation();
     //lấy :id blog
     const getBlogId = location.pathname.split("/")[3];
-    const imgState = useSelector((state) => state.upload.images);
+    const imgState = useSelector((state) => state.upload?.images);
     const bCatState = useSelector((state) => state.bCategory.bCategories);
     const blogState = useSelector((state) => state.blog);
     const {
@@ -71,17 +71,12 @@ const AddBlog = () => {
         }
     }, [isSuccess, isError, isLoading, createdBlog, updatedBlog, navigate]);
 
-    const img = [];
-    imgState.forEach((i) => {
-        img.push({
-            public_id: i.public_id,
-            url: i.url,
-        });
-    });
+    const img = imgState.map((i) => ({
+        public_id: i.public_id,
+        url: i.url,
+    }));
+
     console.log(img);
-    useEffect(() => {
-        formik.values.images = img;
-    }, [blogImages]);
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -106,6 +101,11 @@ const AddBlog = () => {
             }
         },
     });
+    useEffect(() => {
+        formik.values.images = img;
+    }, [formik.value, img]);
+
+    console.log(formik.values.images);
 
     return (
         <div>

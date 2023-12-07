@@ -4,6 +4,7 @@ import { config } from "../../utils/axiosConfig";
 
 // upload img
 const uploadImg = async (data) => {
+    console.log(data);
     const response = await axios.post(`${base_url}upload/`, data, config);
 
     return response.data;
